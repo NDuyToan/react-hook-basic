@@ -7,20 +7,24 @@ const Covid = (props) => {
 
   useEffect(() => {
     async function getDataCovid() {
-      setLoading(true);
-      const res = await axios.get(
-        "https://api.covid19api.com/country/vietnam?from=2021-10-01T00:00:00Z&to=2021-11-01T00:00:00Z"
-      );
-      const data = res && res.data ? res.data : [];
-      if (data && data.length > 0) {
-        data.map((item) => {
-          item.Date = item.Date.split("T")[0];
-          return item;
-        });
-        data.reverse();
+      try {
+        setLoading(true);
+        const res = await axios.get(
+          "https://api.covid19api.com/country/vietnam1?from=2021-10-01T00:00:00Z&to=2021-11-01T00:00:00Z"
+        );
+        const data = res && res.data ? res.data : [];
+        if (data && data.length > 0) {
+          data.map((item) => {
+            item.Date = item.Date.split("T")[0];
+            return item;
+          });
+          data.reverse();
+        }
+        console.log("res", data);
+        setCovid(data);
+      } catch (error) {
+        console.log("err", error.name + ": " + error.message);
       }
-      console.log("res", data);
-      setCovid(data);
     }
     setTimeout(() => {
       setLoading(false);
