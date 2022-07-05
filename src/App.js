@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Nav from "./views/Nav";
 import logo from "./logo.svg";
 import Covid from "./views/Covid";
+import CountDown from "./views/CountDown";
 
 function App() {
   const name = "Sao";
@@ -32,6 +33,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>hello {name}!!!</p>
+        <CountDown />
 
         {/* <input
           type="text"
@@ -49,7 +51,7 @@ function App() {
           })}
         </ul> */}
       </header>
-      <Covid />
+      {/* <Covid /> */}
     </div>
   );
 }
