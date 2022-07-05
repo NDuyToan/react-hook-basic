@@ -3,12 +3,13 @@ import axios from "axios";
 
 const Covid = (props) => {
   const [covid, setCovid] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isErr, setIsErr] = useState(false);
 
   useEffect(() => {
     async function getDataCovid() {
       try {
-        setLoading(true);
+        setIsLoading(true);
         const res = await axios.get(
           "https://api.covid19api.com/country/vietnam1?from=2021-10-01T00:00:00Z&to=2021-11-01T00:00:00Z"
         );
@@ -20,15 +21,17 @@ const Covid = (props) => {
           });
           data.reverse();
         }
-        console.log("res", data);
-        setCovid(data);
+        setTimeout(() => {
+          setIsLoading(false);
+          setCovid(data);
+        }, 5000);
       } catch (error) {
+        setIsLoading(false);
+        setIsErr(true);
         console.log("err", error.name + ": " + error.message);
       }
     }
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
+
     getDataCovid();
   }, []);
 
@@ -46,7 +49,8 @@ const Covid = (props) => {
           </tr>
         </thead>
         <tbody>
-          {!loading &&
+          {!isLoading &&
+            !isErr &&
             covid &&
             covid.length > 0 &&
             covid.map((item) => {
@@ -60,10 +64,13 @@ const Covid = (props) => {
                 </tr>
               );
             })}
-          {loading && (
+          {isLoading && !isErr && (
             <tr>
               <td colSpan={5}>Loading ....</td>
             </tr>
+          )}
+          {!isLoading && isErr && (
+            <span> Have problem. Please try again!!</span>
           )}
         </tbody>
       </table>
