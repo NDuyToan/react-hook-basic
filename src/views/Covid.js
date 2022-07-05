@@ -1,39 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import useFetch from "../customize/fetch";
 
 const Covid = (props) => {
-  const [covid, setCovid] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isErr, setIsErr] = useState(false);
+  // const [covid, setCovid] = useState([]);
+  // const [isLoading, setIsLoading] = useState(false);
+  // const [isErr, setIsErr] = useState(false);
 
-  useEffect(() => {
-    async function getDataCovid() {
-      try {
-        setIsLoading(true);
-        const res = await axios.get(
-          "https://api.covid19api.com/country/vietnam1?from=2021-10-01T00:00:00Z&to=2021-11-01T00:00:00Z"
-        );
-        const data = res && res.data ? res.data : [];
-        if (data && data.length > 0) {
-          data.map((item) => {
-            item.Date = item.Date.split("T")[0];
-            return item;
-          });
-          data.reverse();
-        }
-        setTimeout(() => {
-          setIsLoading(false);
-          setCovid(data);
-        }, 5000);
-      } catch (error) {
-        setIsLoading(false);
-        setIsErr(true);
-        console.log("err", error.name + ": " + error.message);
-      }
-    }
-
-    getDataCovid();
-  }, []);
+  const url =
+    "https://api.covid19api.com/country/vietnam?from=2021-10-01T00:00:00Z&to=2021-11-01T00:00:00Z";
+  const { data: covid, isLoading, isErr } = useFetch(url);
 
   return (
     <div className="data-covid">
