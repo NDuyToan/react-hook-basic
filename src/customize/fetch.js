@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import moment from "moment";
 
 const useFetch = (url) => {
   const [data, setData] = useState([]);
@@ -14,7 +15,7 @@ const useFetch = (url) => {
         const data = res && res.data ? res.data : [];
         if (data && data.length > 0) {
           data.map((item) => {
-            item.Date = item.Date.split("T")[0];
+            item.Date = moment(item.Date).format("YYYY-MM-DD");
             return item;
           });
           data.reverse();
